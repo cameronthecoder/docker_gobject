@@ -36,3 +36,6 @@ class Containers(GObject.Object):
 
     def get(self, name_or_id, callback: Callable[[bool, bool, bytes]]):
         self.session.make_api_call(self.session.api_url + "/containers/" + name_or_id + "/json", callback)
+
+    def tail_togs(self, id, callback):
+        self.session.connect_to_websocket(f"ws://127.0.0.1:5555/containers/{id}/attach/ws?logs=true&stream=true", callback)

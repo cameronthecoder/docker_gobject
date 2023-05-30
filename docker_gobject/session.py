@@ -76,6 +76,15 @@ class Session(Soup.Session):
             msg, GLib.PRIORITY_DEFAULT, self.cancellable, on_response, msg
         )
 
+    def connect_to_websocket(self, url, callback):
+        message = Soup.Message.new(
+            "GET",
+            url,
+        )
+        self.websocket_connect_async(
+            message, None, [], GLib.PRIORITY_HIGH, self.cancellable, callback
+        )
+
 
 
 class ResponseError(Exception):
