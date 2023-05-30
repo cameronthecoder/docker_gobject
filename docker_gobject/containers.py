@@ -8,7 +8,7 @@ gi.require_version("Gtk", "4.0")
 gi.require_version("Json", "1.0")
 from docker_gobject.session import Session
 from docker_gobject.container import Container
-from gi.repository import Gio, Soup, GLib, Json, Gtk, GObject
+from gi.repository import Gtk, GObject
 
 
 class Containers(GObject.Object):
@@ -38,4 +38,4 @@ class Containers(GObject.Object):
         self.session.make_api_call(self.session.api_url + "/containers/" + name_or_id + "/json", callback)
 
     def tail_togs(self, id, callback):
-        self.session.connect_to_websocket(f"ws://127.0.0.1:5555/containers/{id}/attach/ws?logs=true&stream=true", callback)
+        self.session.connect_to_websocket(f"ws://{self.session.api_url}/containers/{id}/attach/ws?logs=true&stream=true", callback)
