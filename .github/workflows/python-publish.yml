@@ -7,11 +7,11 @@ on:
     branches: [ main ]
 
 jobs:
-    build-n-publish:
-    name: Build and publish Python distribution
-    runs-on: ubuntu-latest
-    steps:
-        - uses: actions/checkout@master
+    build:
+      name: Build and publish Python distribution
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v3
         - name: Initialize Python
         uses: actions/setup-python@v1
         with:
