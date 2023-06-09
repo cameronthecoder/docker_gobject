@@ -273,6 +273,70 @@ class Config(GObject.Object):
     stop_timeout: GObject.Property = GObject.Property(type=int)
     "Stop timeout"
 
+    def __init__(self, attach_stderr, attach_stdin, attach_stdout, cmd, domain_name, env, health_check, exec_ids, host_name, image, labels, mac_address, network_disabled, open_stdin, stdin_once, tty, user, volumes, working_dir, stop_signal, stop_timeout, **kwargs):
+        super().__init__(**kwargs)
+        properties = {
+            "attach_stderr": attach_stderr,
+            "attach_stdin": attach_stdin,
+            "attach_stdout": attach_stdout,
+            "cmd": cmd,
+            "domain_name": domain_name,
+            "env": env,
+            "health_check": health_check,
+            "host_name": exec_ids,
+            "image": image,
+            "labels": labels,
+            "mac_address": mac_address,
+            "network_disabled": network_disabled,
+            "open_stdin": open_stdin,
+            "stdin_once": stdin_once,
+            "tty": tty,
+            "user": user,
+            "volumes": volumes,
+            "working_dir": working_dir,
+            "stop_signal": stop_signal,
+            "stop_timeout": stop_timeout
+        }
+        for name, value in properties.items():
+            self.set_property(name, value)
+
+    @staticmethod
+    def from_json(data):
+        env = Gtk.ListStore(str,)
+        cmd = Gtk.ListStore(str,)
+        print(data)
+
+        for var in data.get("Env", []):
+            env.append([var],)
+
+        if data.get("Cmd") is not None:
+            for c in data.get("Cmd"):
+                cmd.append([c],)
+
+        return Config(
+                data.get("AttachStderr"),
+                data.get("AttachStdin"),
+                data.get("AttachStdout"),
+                cmd,
+                data.get("DomainName"),
+                env,
+                data.get("HealthCheck"),
+                data.get("ExecIds"),
+                data.get("HostName"),
+                data.get("Image"),
+                data.get("Labels"),
+                data.get("MacAddress"),
+                data.get("NetworkDisabled"),
+                data.get("OpenStdin"),
+                data.get("StdinOnce"),
+                data.get("Tty"),
+                data.get("User"),
+                data.get("Volumes"),
+                data.get("WorkingDir"),
+                data.get("StopSignal"),
+                data.get("StopTimeout", 0)
+            )
+
 class Container(GObject.Object):
     __gtype_name__ = "Container"
 

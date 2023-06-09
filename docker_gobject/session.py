@@ -28,18 +28,17 @@ class Session(Soup.Session):
         self.set_idle_timeout(0)
 
     @staticmethod
-    def new() -> 'Session':
+    def new(sock) -> 'Session':
         """Create a new instance of Session."""
-        sock = Gio.UnixSocketAddress.new("/run/docker.sock")
         s_session = Soup.Session(remote_connectable=sock)
         s_session.__class__ = Session
         return s_session
 
     @staticmethod
-    def get() -> 'Session':
+    def get(sock = None, t = False) -> 'Session':
         """Return an active instance of Session."""
         if Session.instance is None:
-            Session.instance = Session.new()
+            Session.instance = Session.new(sock)
         return Session.instance
 
     @classmethod
@@ -51,11 +50,6 @@ class Session(Soup.Session):
     def set_api_url(cls, api_url: str):
         """Set the API URL for the session."""
         cls.api_url = api_url
-
-    @classmethod
-    def set_socket(cls, socket: Gio.UnixSocketAddress):
-        cls.socket = socket
-        cls.remote_connectable = socket
 
 
 
